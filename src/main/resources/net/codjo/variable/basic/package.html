@@ -1,0 +1,29 @@
+<BODY>
+Ce package permet de remplacer dans un String des mots par d'autres. (via une map de variables) <br>
+NB : le cas ou une variable est incluse dans une autre est bien géré.
+<HR width="100%" SIZE=2>
+<STRONG>Utilisation de la Classe BasicVariableReplacer</STRONG> <BR>
+<u>replacer les Keys par les valeurs de la map</u> <br>
+le cas de string et stringBuffer illustre le cas ou on remplace le mot stringBuffer et non string seulement. (inclusion de var)
+pour cd et cde (on spécifie seulement cd dans la map donc cde sera remplcé)
+<pre>
+        String template = "ceci est un exemple de remplacement. string stringBuffer cd cdj";
+        Map map = new HashMap();
+        map.put("de", "DE");
+        map.put("est un", "is a");
+        map.put("string", "Integer");
+        map.put("stringBuffer", "Long");
+        map.put("cd", "FFFF");
+        String result = BasicVariableReplacer.replaceKeysPerValues(template, map);
+        System.out.println("result = " + result);
+</pre>
+
+Résultat:
+<pre>
+    result = ceci is a exemple DE remplacement. Integer Long FFFF FFFFj
+</pre>
+
+<u>replacer les valeurs par les Keys de la map</u> <br>
+pareil que le cas présedent, mais les values seront remplacé par les keys.
+
+</BODY>

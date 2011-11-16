@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+    <properties>
+        <title>Changes</title>
+    </properties>
+    <body>
+        <release version="1.16" date="2007-03-15" description="Correctif">
+            <action dev="villard,catteo" type="fix">
+               Correction d'un bug lorsque deux variables sont contigües.
+            </action>
+        </release>
+        <release version="1.15" date="2007-02-08" description="Correctif">
+            <action dev="boissie,catteo,gonnot" type="fix">
+               Correction d'un bug lorsque la valeur d'une variable contenait le symbole séparateur ($).
+            </action>
+        </release>
+        <release version="1.14" date="2005-12-08" description="Nouvelle méthode">
+            <action dev="couvreu" type="add">
+               Ajout de la methode TemplateInterpreter.evaluate(String template, Map variables) pour faciliter
+                l'utilisation.
+            </action>
+        </release>
+        <release version="1.13" date="2004-08-23" description="Changement d'une signature">
+            <action dev="nadaud" type="fix">
+               La méthode TemplateInterpreter.addAll accepte maitnenant le type Collection
+               (à la place de List).
+            </action>
+        </release>
+        <release version="1.12" date="2004-07-20" description="Ajout de BasicVariableReplacer">
+            <action dev="lajmi" type="add">
+               l'ajout permet de remplacer dans un String des mots par d'autres. (via une map de variables)
+            </action>
+            <action dev="gonnot" type="fix">
+               Quelques modifications de presentation durant le passage au nouveau CVS
+               et maven 1.0-rc1.
+            </action>
+        </release>
+        <release version="1.11" date="2003-09-05" description="Version initiale">
+            <action dev="gonnot" type="fix">
+               Stabilisation des SNAPSHOT.
+            </action>
+        </release>
+    </body>
+</document>

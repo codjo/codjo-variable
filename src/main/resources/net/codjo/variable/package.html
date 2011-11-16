@@ -1,0 +1,69 @@
+<BODY>
+Ce package permet d'instancier des variables contenu dans une <code>String</code>. <P>
+
+Une variable est defini par deux charactères '$'.<p>
+
+<HR width="100%" SIZE=2>
+<STRONG>Utilisation du package</STRONG> <BR>
+<u>Utilisation de l'interpreteur de pattern</u> <br>
+Dans cet exemple, les variables du template sont remplacées par les valeurs
+définis dans la table de hachage.
+<pre>
+        String template = "le grand $v1$";
+        Map map = new HashMap();
+        map.put("v1", "bobo");
+        interpreter.addAsVariable(map);
+        String result = interpreter.evaluate(template);
+        // result = "le grand bobo"
+</pre>
+
+<u>Utilisation de l'iterateur : </u> <br>
+Dans cet exemple, on itère sur toutes les variables du buffer en les remplaçant
+par la valeur 'a'.
+<pre>
+        StringBuffer buf = new StringBuffer("Hello $name$ le petit $type$.");
+        TemplateVariableIterator iter = new TemplateVariableIterator(buf);
+
+        for (; iter.hasNext()) {
+            System.out.println("nom de la variable = " + iter.next());
+            iter.setValue("a");
+        }
+        System.out.println("buffer = " + buf.toString());
+</pre>
+Résultat:
+<pre>
+    nom de la variable = name
+    nom de la variable = type
+    buffer = Hello a le petit a.
+</pre>
+<P>
+
+<HR width="100%" SIZE=2>
+<STRONG>Extension</STRONG> <BR>
+Il est possible de définir des variables dépendant d'un contexte (heure
+d'évaluation, etc..) en définissant une implantation de <code>Variable</code>.
+<pre>
+    interpreter.add(
+        new Variable() {
+            public String getName() {
+                return "toDay";
+            }
+
+
+            public String getValue() {
+                return new java.util.Date();
+            }
+        });
+</pre>
+<P>
+
+<HR width="100%" SIZE=2>
+<STRONG>Résumé des classes</STRONG> <BR>
+Il existe 3 classes importantes :
+<ul>
+    <li> <code>Variable</code> pour définir des variables,
+    <li> <code>TemplateVariableIterator</code> pour iterer sur les variables,
+    <li> et <code>TemplateInterpreter</code> pour évaluer un template.
+</ul>
+
+</BODY>
