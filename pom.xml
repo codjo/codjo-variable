@@ -8,12 +8,21 @@
 
     <parent>
         <groupId>net.codjo.pom</groupId>
-        <artifactId>codjo-pom-library</artifactId>
+        <artifactId>codjo-pom-external</artifactId>
         <version>SNAPSHOT</version>
     </parent>
     <groupId>net.codjo.variable</groupId>
     <artifactId>codjo-variable</artifactId>
     <version>2.2-SNAPSHOT</version>
+
+   <dependencies>
+        <!-- Dependance pour les tests -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <!--
     | Project Information
