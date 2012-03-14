@@ -14,14 +14,6 @@
     <groupId>net.codjo.variable</groupId>
     <artifactId>codjo-variable</artifactId>
     <version>2.2-SNAPSHOT</version>
-	<dependencies>
-        <dependency>
-	        <groupId>junit</groupId>
-	        <artifactId>junit</artifactId>
-	        <scope>test</scope>
-        </dependency>
-	</dependencies>
-
    <dependencies>
         <!-- Dependance pour les tests -->
         <dependency>
