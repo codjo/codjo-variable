@@ -8,8 +8,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 /**
- * Evaluateur de template. Cette classe évalue toutes les variables contenues dans le
- * template.
+ * Evaluateur de template. Cette classe évalue toutes les variables contenues dans le template.
  *
  * @author $Author: levequt $
  * @version $Revision: 1.3 $
@@ -17,7 +16,10 @@ import java.util.Map;
 public class TemplateInterpreter {
     private Map variables = new java.util.HashMap();
 
-    public TemplateInterpreter() {}
+
+    public TemplateInterpreter() {
+    }
+
 
     /**
      * Ajoute une définition de variable.
@@ -40,7 +42,7 @@ public class TemplateInterpreter {
      * @param list List a ajouter
      */
     public void addAll(Collection list) {
-        for (Iterator iter = list.iterator(); iter.hasNext();) {
+        for (Iterator iter = list.iterator(); iter.hasNext(); ) {
             add((Variable)iter.next());
         }
     }
@@ -52,7 +54,7 @@ public class TemplateInterpreter {
      * @param properties L'objet a ajouter
      */
     public void addAsVariable(Map properties) {
-        for (Iterator iter = properties.entrySet().iterator(); iter.hasNext();) {
+        for (Iterator iter = properties.entrySet().iterator(); iter.hasNext(); ) {
             Map.Entry obj = (Map.Entry)iter.next();
             add(new StringVariable(obj.getKey().toString(), obj.getValue().toString()));
         }
@@ -73,33 +75,32 @@ public class TemplateInterpreter {
      * @param template Le template
      *
      * @return Le template instanciee
-     *
-     * @exception UnknownVariableException
      */
     public String evaluate(String template) throws UnknownVariableException {
         StringBuffer result = new StringBuffer(template);
-        TemplateVariableIterator iter = new TemplateVariableIterator(result);
-        while (iter.hasNext()) {
-            String varName = iter.nextVariable();
-            iter.setValue(getValue(varName));
-        }
 
-        return result.toString();
+            TemplateVariableIterator iter = new TemplateVariableIterator(result);
+            while (iter.hasNext()) {
+                String varName = iter.nextVariable();
+                iter.setValue(getValue(varName));
+            }
+            String before = template;
+            String after = result.toString();
+
+            while (!after.equals(before)) {
+                before = after;
+                after = evaluate(before);
+            }
+
+            return after;
     }
 
 
     /**
      * Evalue le 'template' à l'aide des variables passées en paramètre.
-     *
-     * @param template
-     * @param variables
-     *
-     * @return
-     *
-     * @throws UnknownVariableException
      */
     public String evaluate(String template, Map variables)
-            throws UnknownVariableException {
+          throws UnknownVariableException {
         addAsVariable(variables);
         return evaluate(template);
     }
@@ -116,8 +117,6 @@ public class TemplateInterpreter {
      * @param varName Nom de la variable
      *
      * @return La valeur de la variable
-     *
-     * @exception UnknownVariableException
      */
     private String getValue(String varName) throws UnknownVariableException {
         Variable variable = (Variable)variables.get(varName);
@@ -126,6 +125,7 @@ public class TemplateInterpreter {
         }
         return variable.getValue();
     }
+
 
     /**
      * Definition simple d'une variable.
@@ -137,16 +137,18 @@ public class TemplateInterpreter {
         private String name;
         private String value;
 
+
         /**
          * Constructeur de StringVariable
          *
-         * @param variableName nom
+         * @param variableName  nom
          * @param variableValue valeur
          */
         StringVariable(String variableName, String variableValue) {
             name = variableName;
             value = variableValue;
         }
+
 
         /**
          * Retourne le nom de la varaiable.
