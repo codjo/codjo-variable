@@ -5,7 +5,11 @@
  */
 package net.codjo.variable;
 import java.util.NoSuchElementException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import junit.framework.TestCase;
+
+import static net.codjo.variable.TemplateVariableIterator.BETWEEN_DOLLARDS_PATTERN;
 /**
  * Classe de Test de <code>PatternVariableIterator</code>.
  *
@@ -53,7 +57,8 @@ public class TemplateVariableIteratorTest extends TestCase {
             iter.next();
             fail("pas de next");
         }
-        catch (NoSuchElementException ex) {}
+        catch (NoSuchElementException ex) {
+        }
     }
 
 
@@ -72,7 +77,7 @@ public class TemplateVariableIteratorTest extends TestCase {
 
 
     public void test_setValue_valueContainsDollar()
-            throws Exception {
+          throws Exception {
         StringBuffer buf = new StringBuffer("Devise $name$ en $country$.");
         TemplateVariableIterator iter = new TemplateVariableIterator(buf);
 
@@ -99,8 +104,7 @@ public class TemplateVariableIteratorTest extends TestCase {
 
 
     public void test_setValue_EmptyValue() throws Exception {
-        StringBuffer buf =
-            new StringBuffer("$ref.class$ ref = new $ref.class$(this, id);");
+        StringBuffer buf = new StringBuffer("$ref.class$ ref = new $ref.class$(this, id);");
         TemplateVariableIterator iter = new TemplateVariableIterator(buf);
 
         iter.next();
@@ -110,5 +114,31 @@ public class TemplateVariableIteratorTest extends TestCase {
         iter.setValue("Lolo");
 
         assertEquals(buf.toString(), " ref = new Lolo(this, id);");
+    }
+
+
+    public void test_pattern() throws Exception {
+        assertVariableCount(BETWEEN_DOLLARDS_PATTERN, "dollar($)", 0);
+        assertVariableCount(BETWEEN_DOLLARDS_PATTERN, "$variable$", 1);
+        assertVariableCount(BETWEEN_DOLLARDS_PATTERN, "dollar($) j'ai fait expres de mettre $ dans la phrase", 0);
+        assertVariableCount(BETWEEN_DOLLARDS_PATTERN, "dollar($vraiVariable$) dans la phrase", 1);
+        assertVariableCount(BETWEEN_DOLLARDS_PATTERN, "dollar($vraiV23ariable$) dans la phrase", 1);
+        assertVariableCount(BETWEEN_DOLLARDS_PATTERN, "dollar($vrai_Variable$) dans la phrase", 1);
+        assertVariableCount(BETWEEN_DOLLARDS_PATTERN, "dollar($vrai.Variable.super$) dans la phrase", 1);
+        assertVariableCount(BETWEEN_DOLLARDS_PATTERN, "dollar($vrai-Var;-)iable.super$) dans la phrase", 1);
+        assertVariableCount(BETWEEN_DOLLARDS_PATTERN, "dollar($vraiVariable$$deuxiemeVariable$) dans la phrase", 2);
+        assertVariableCount(BETWEEN_DOLLARDS_PATTERN, "dollar($vraiVariable$$deuxiemeVariable) dans la phrase", 1);
+        assertVariableCount(BETWEEN_DOLLARDS_PATTERN, "dollar($vraiVariable$a$deuxiemeVariable$) dans la phrase", 2);
+        assertVariableCount(BETWEEN_DOLLARDS_PATTERN, "dollar($$) dans la phrase", 1);
+    }
+
+
+    private void assertVariableCount(Pattern pattern, String textToAnalyse, int expected) {
+        Matcher matcher = pattern.matcher(textToAnalyse);
+        int actual = 0;
+        while (matcher.find()) {
+            actual++;
+        }
+        assertEquals(expected, actual);
     }
 }
