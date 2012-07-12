@@ -6,6 +6,7 @@
 package net.codjo.variable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.regex.Pattern;
 /**
  * Classe permettant d'iterer sur les variables definies dans le template.
  *
@@ -18,10 +19,15 @@ public class TemplateVariableIterator implements Iterator {
     private int leftIndex = -1;
     private int rightIndex = -1;
     private StringBuffer template;
+    private boolean containsVariables;
+    static final Pattern BETWEEN_DOLLARDS_PATTERN = Pattern.compile("\\$([\\S&&[^\\$]]*)\\$");
+
 
     public TemplateVariableIterator(StringBuffer template) {
         this.template = template;
+        containsVariables = doesContainsVariable(template);
     }
+
 
     /**
      * Positionne la valeur de la variable courante.
@@ -40,7 +46,7 @@ public class TemplateVariableIterator implements Iterator {
 
 
     public boolean hasNext() {
-        return nextSeparatorIndex(rightIndex + SEPARATOR_LENGTH) != -1;
+        return containsVariables && nextSeparatorIndex(rightIndex + SEPARATOR_LENGTH) != -1;
     }
 
 
@@ -63,7 +69,7 @@ public class TemplateVariableIterator implements Iterator {
      */
     public String nextVariable() {
         leftIndex =
-            nextSeparatorIndex(rightIndex + ((rightIndex == -1) ? 1 : SEPARATOR_LENGTH));
+              nextSeparatorIndex(rightIndex + ((rightIndex == -1) ? 1 : SEPARATOR_LENGTH));
         rightIndex = nextSeparatorIndex(leftIndex + SEPARATOR_LENGTH);
         if (leftIndex == -1 || rightIndex == -1) {
             throw new NoSuchElementException();
@@ -82,5 +88,10 @@ public class TemplateVariableIterator implements Iterator {
 
     private int nextSeparatorIndex(int idx) {
         return template.toString().indexOf(SEPARATOR, idx);
+    }
+
+
+    private boolean doesContainsVariable(StringBuffer string) {
+        return BETWEEN_DOLLARDS_PATTERN.matcher(string).find();
     }
 }
