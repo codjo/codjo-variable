@@ -56,7 +56,7 @@ public class TemplateInterpreter {
     public void addAsVariable(Map properties) {
         for (Iterator iter = properties.entrySet().iterator(); iter.hasNext(); ) {
             Map.Entry obj = (Map.Entry)iter.next();
-            add(new StringVariable(obj.getKey().toString(), obj.getValue().toString()));
+            add(new StringVariable(obj.getKey().toString(), String.valueOf(obj.getValue())));
         }
     }
 
