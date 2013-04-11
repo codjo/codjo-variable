@@ -84,6 +84,16 @@ public class TemplateInterpreterTest extends TestCase {
         assertEquals(result, interpreter.evaluate(template));
     }
 
+    public void test_evaluate_nullValue() throws Exception {
+        String template = "A $variable$ B";
+        final String result = "A null B";
+        final Map variables = new HashMap(1);
+        variables.put("variable", null);
+
+        assertEquals(result, interpreter.evaluate(template, variables));
+        assertEquals(result, interpreter.evaluate(template));
+    }
+
     public void test_evaluate_noSpaceInVariableNames() throws Exception {
         String template = "the big $variable withSpace$ bobo";
         final String result = "the big $variable withSpace$ bobo";
